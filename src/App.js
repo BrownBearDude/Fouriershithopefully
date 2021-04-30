@@ -74,11 +74,6 @@ export default function App() {
             <HexColorInput color={color} onChange={setColor} />
           </div>
           <Form.Group>
-            <Form.Label>{"Scale: "+formValues.scale}</Form.Label>
-            <Form.Control type="range" min="0.05" max="20" defaultValue="1" step="0.25" {...register('scale', { required: true })} ></Form.Control>
-            <Form.Text>keep value low</Form.Text>
-          </Form.Group>
-          <Form.Group>
             <Form.Label>thickness</Form.Label>
             <Form.Control type="number" min="1" max="50" defaultValue="2" {...register('thiccness', { required: true })} ></Form.Control>
           </Form.Group>
