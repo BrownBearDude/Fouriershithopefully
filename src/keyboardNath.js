@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 import './globals.js'
 import "p5/lib/addons/p5.sound";
-import p5, { PolySynth, Oscillator } from "p5";
+import p5 from "p5";
 import QwertyHancock from 'qwerty-hancock';
 
 
@@ -17,54 +17,49 @@ class KeyBoardNath extends React.Component {
     Sketch = (p) => {
         let keyboard
 
-        let env
-        let oscs = {}
-
         let t1 = 0.1; // attack time in seconds
         let l1 = 0.7; // attack level 0.0 to 1.0
         let t2 = 0.3; // decay time in seconds
-        let l2 = 0.1;
+        let l2 = 1;
 
+        let octaves = 5
+        p.windowResized = () => {
+            keyboard.width = p.windowWidth
+            keyboard.height = p.windowHeight/2
+        }
         p.setup = () => {
             keyboard = new QwertyHancock({
                 id: 'keyboard',
                 width: p.windowWidth,
-                height: p.windowHeight,
-                octaves: 3,
-                startNote: 'A3',
+                height: p.windowHeight/2,
+                octaves: octaves,
+                startNote: 'c2',
                 whiteNotesColour: 'white',
                 blackNotesColour: 'black',
-                hoverColour: '#03fc73'
+                hoverColour: '#030c73',
+                keyOctave: 4
            });
 
-        env = new p5.Envelope(t1, l1, t2, l2);
-        let nodes = []   
-            keyboard.keyDown = function (note, frequency) {
-                // console.log(frequency)
-                let wave = new p5.Oscillator('sawtooth')
-                wave.amp(0.1)
-                wave.start()
-                env.triggerAttack(wave);
-                nodes.push(wave)
-            };
-            let new_nodes = []
+           
+            let notes = {}
+            keyboard.keyDown = function (bruh, frequency) {
+                let note = new p5.Oscillator();
+                let env = new p5.Envelope(t1, l1, t2, l2);
+                note.setType('sawtooth')
+                note.amp(0.1)
+                note.freq(frequency)
+                note.start()
+                env.triggerAttack(note)
+                notes[frequency] = {note: note, env: env}
+            }
             keyboard.keyUp = function (note, frequency) {
-                console.log(nodes)
-                for (let i = 0; i < nodes.length; i++) {
-                    if (Math.round(nodes[i].f) === Math.round(frequency) ) {
-                        nodes[i].stop()
-                    } else { 
-                        new_nodes.push(nodes[i])
-                    }
+                if (notes[frequency]) {
+                    notes[frequency].env.triggerRelease(notes[frequency].note)
+                    notes[frequency].note.stop()
+                    delete notes[frequency]
                 }
-                nodes = new_nodes
-                
             }
         }
-
-        
-        
-        
 
           
         document.addEventListener('gesturestart', function(e) {
