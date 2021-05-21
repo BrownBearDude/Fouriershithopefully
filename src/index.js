@@ -9,10 +9,8 @@ import Home from "./home"
 import KeyBoardNath from './keyboardNath';
 import keyBoard from './adien'
 import puzzle from './jackso'
+import h from './math';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-
-
-
 
 ReactDOM.render(
   <React.StrictMode>
@@ -25,6 +23,7 @@ ReactDOM.render(
           <Route path="/bruh" component={KeyBoardNath}/>
           <Route path="/g" component={keyBoard}/>
           <Route path="/j" component={puzzle}/>
+          <Route path="/h" component={h}/>
           <Route path="" component={Home}/>
           
         </Switch>

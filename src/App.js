@@ -57,7 +57,7 @@ export default function App() {
           </Form.Group>
           <Form.Group>
             <Form.Label htmlFor="draw">Draw</Form.Label>
-            <Form.Check id="draw"  defaultValue={false} {...register('draw', { required: true })}></Form.Check>
+            <Form.Check id="draw" defaultValue={false} {...register('draw', { required: true })}></Form.Check>
           </Form.Group>
           <hr/>
           <Form.Group>
